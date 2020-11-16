@@ -1,5 +1,3 @@
---DROP FUNCTION substring_intersect (substrings text, search_strings text, separator char(1));
-
 CREATE OR REPLACE FUNCTION substring_intersect (substrings text, search_strings text, separator char(1) default chr(31))
   RETURNS TABLE (substr text, search_strings text[])
 AS $$
@@ -55,7 +53,11 @@ return [(k, list(v)) for k, v in results.items()]
 
 $$ LANGUAGE plpython3u;
 
+/*
+SELECT * from substring_intersect('a,ball,ca,i', 'ask,can,i,have,coffee', ',');
 
-SELECT * from substring_intersect('a,b,c,d', 'that,is,bat', ',');
-
-SELECT * from substring_intersect(ARRAY['a','b','c'], ARRAY['that', 'is', 'bat']);
+substr	search_strings
+ca	{"can"}
+i	  {"i"}
+a	  {"have","can","ask"}
+*/
